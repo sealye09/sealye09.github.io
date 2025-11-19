@@ -1,0 +1,258 @@
+<!doctype html><html lang=zh-CN><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><title>001_使用 TaroJS 提供的能力渲染富文本</title><meta content=使用TaroJS渲染富文本：通过dangerouslySetInnerHTML展示HTML内容，添加基础样式，修复微信小程序span渲染问题，并支持事件绑定。包含代码示例和常见问题解决方案。 name=description><meta content="富文本, Taro, React" name=keywords><meta content=Seal name=author><meta content=index,follow name=robots><meta content=index,follow name=googlebot><meta content="" name=baidu-verification><meta content=article property=og:type><meta content="001_使用 TaroJS 提供的能力渲染富文本" property=og:title><meta content=使用TaroJS渲染富文本：通过dangerouslySetInnerHTML展示HTML内容，添加基础样式，修复微信小程序span渲染问题，并支持事件绑定。包含代码示例和常见问题解决方案。 property=og:description><meta content=https://sealye09.github.io/posts/2025/11/001_使用-tarojs-提供的能力渲染富文本.html property=og:url><meta content="Seal's Blog" property=og:site_name><meta content=zh_CN property=og:locale><meta content=summary_large_image name=twitter:card><meta content="001_使用 TaroJS 提供的能力渲染富文本" name=twitter:title><meta content=使用TaroJS渲染富文本：通过dangerouslySetInnerHTML展示HTML内容，添加基础样式，修复微信小程序span渲染问题，并支持事件绑定。包含代码示例和常见问题解决方案。 name=twitter:description><meta content=@sealye09 name=twitter:creator><link href=https://sealye09.github.io/posts/2025/11/001_使用-tarojs-提供的能力渲染富文本.html rel=canonical><link href=../../../favicon.ico rel=icon type=image/x-icon><link href=../../../apple-touch-icon.png rel=apple-touch-icon sizes=180x180><link href=../../../favicon-32x32.png rel=icon sizes=32x32 type=image/png><link href=../../../favicon-16x16.png rel=icon sizes=16x16 type=image/png><script type=application/ld+json>{
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Seal's Blog",
+        "description": "Seal's Blog - 分享技术见解和编程经验",
+        "url": "https://sealye09.github.io",
+        "author": {
+          "@type": "Person",
+          "name": "Seal"
+        },
+        "inLanguage": "zh-CN"
+      }</script><script>!function(){try{var e=localStorage.getItem("theme"),t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,a=e||(t?"dark":"light");document.documentElement.setAttribute("data-theme",a)}catch(e){}}()</script><link href=https://fonts.googleapis.com rel=preconnect><link href=https://fonts.gstatic.com rel=preconnect crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel=stylesheet><link href=../../../assets/common.css rel=stylesheet><link href=../../../assets/post.css rel=stylesheet><link href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css rel=stylesheet media=(prefers-color-scheme:light)><link href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css rel=stylesheet media=(prefers-color-scheme:dark)><meta content=#ffffff name=theme-color><header class=site-header><div class="container header-inner"><a href=../../../index.html class=brand>Seal's Blog</a><nav class=site-nav aria-label=主导航><a href=../../../index.html class=site-nav__link>首页</a> <a href=../../../archive.html class=site-nav__link>归档</a></nav><div class=header-actions><a href=https://github.com/sealye09 class=github-link aria-label=GitHub data-username=sealye09 rel="noopener noreferrer" target=_blank><svg aria-hidden=true fill=currentColor height=20 viewBox="0 0 24 24" width=20><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg> </a><button aria-label=切换主题 class=theme-toggle id=theme-toggle><svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-sun><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" fill=none stroke=currentColor stroke-linecap=round stroke-width=1.5 /></svg> <svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-moon><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button> <button aria-label=切换菜单 class=mobile-menu-toggle aria-controls=mobile-menu aria-expanded=false><svg aria-hidden=true fill=currentColor height=24 viewBox="0 0 24 24" width=24 class=menu-icon-open><path d="M3 6h18M3 12h18M3 18h18" fill=none stroke=currentColor stroke-linecap=round stroke-width=2 /></svg> <svg aria-hidden=true fill=currentColor height=24 viewBox="0 0 24 24" width=24 class=menu-icon-close style=display:none><path d="M18 6L6 18M6 6l12 12" fill=none stroke=currentColor stroke-linecap=round stroke-width=2 stroke-linejoin=round /></svg></button></div></div><nav class=mobile-menu aria-label=移动端导航 id=mobile-menu><div class=mobile-menu-section><a href=../../../index.html class=mobile-nav__link>首页</a> <a href=../../../archive.html class=mobile-nav__link>归档</a></div><div class="mobile-menu-section mobile-menu-actions"><a href=https://github.com/sealye09 class=mobile-action-link aria-label=GitHub data-username=sealye09 rel="noopener noreferrer" target=_blank><svg aria-hidden=true fill=currentColor height=20 viewBox="0 0 24 24" width=20><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg> <span>GitHub</span> </a><button aria-label=切换主题 class=mobile-action-button id=mobile-theme-toggle><svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-sun><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" fill=none stroke=currentColor stroke-linecap=round stroke-width=1.5 /></svg> <svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-moon><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg> <span>主题</span></button></div></nav></header><main class="container site-main"><article class="content-section post"><div class=post-main><div class=post-meta><h1 class=post-title>001_使用 TaroJS 提供的能力渲染富文本</h1><div class="post-meta__item post-meta__tags"><span class=post-meta__label>标签：</span><div class=post-tags><span class=post-tag>富文本</span><span class=post-tag>Taro</span><span class=post-tag>React</span></div></div><div class="post-meta__item post-meta__summary"><span class=post-meta__label>摘要：</span><span class=post-summary-text>使用TaroJS渲染富文本：通过dangerouslySetInnerHTML展示HTML内容，添加基础样式，修复微信小程序span渲染问题，并支持事件绑定。包含代码示例和常见问题解决方案。</span></div><div class=post-meta__item><span class=post-meta__label>创建日期：</span><time>2025-11-08</time></div><div class=post-meta__item><span class=post-meta__label>修改日期：</span><time>2025-11-19</time></div></div><div class=post-content><h2 id=%E4%BD%BF%E7%94%A8-tarojs-%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC tabindex=-1>使用 TaroJS 提供的能力渲染富文本 <a href=#%E4%BD%BF%E7%94%A8-tarojs-%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC class=header-anchor aria-hidden=true>#</a></h2><h3 id=1.-%E5%87%86%E5%A4%87-html-%E5%AD%97%E7%AC%A6%E4%B8%B2 tabindex=-1>1. 准备 HTML 字符串 <a href=#1.-%E5%87%86%E5%A4%87-html-%E5%AD%97%E7%AC%A6%E4%B8%B2 class=header-anchor aria-hidden=true>#</a></h3><pre class=hljs><code><span class=hljs-keyword>import</span> { <span class="hljs-title class_">View</span> } <span class=hljs-keyword>from</span> <span class=hljs-string>&quot;@tarojs/components&quot;</span>;
+
+<span class=hljs-keyword>const</span> content = <span class=hljs-string>&quot;&lt;p&gt;你好 &lt;span&gt;世界&lt;/span&gt;&lt;/p&gt;&quot;</span>;
+
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>default</span> <span class=hljs-keyword>function</span> <span class="hljs-title function_">ArticleContent</span>(<span class=hljs-params></span>) {
+  <span class=hljs-comment>// 容器上需要添加类名 `taro_html`</span>
+  <span class=hljs-keyword>return</span> (
+    <span class=language-xml><span class=hljs-tag>&lt;<span class=hljs-name>View</span> <span class=hljs-attr>className</span>=<span class=hljs-string>&quot;article-content taro_html&quot;</span> <span class=hljs-attr>dangerouslySetInnerHTML</span>=<span class=hljs-string>{{</span> <span class=hljs-attr>__html:</span> <span class=hljs-attr>content</span> }} /&gt;</span></span>
+  );
+}
+</code></pre><p>如果 <code>content</code> 是动态变化的，建议用 <code>useMemo</code> 缓存，可以减少不必要的重渲染。<p>你可能会发现未转义字符（如 <code>&amp;lt;</code>、<code>&amp;amp;</code> 等，<a href=https://developer.mozilla.org/zh-CN/docs/Glossary/Escape_character>参考：MDN「转义字符」</a>）会直接出现在页面上（<a href=https://docs.taro.zone/docs/html#html-%E8%BD%AC%E4%B9%89>taro 不做转义</a>），导致展示异常，你应该在后台的编辑器中做实体转义。<h3 id=2.-%E6%B7%BB%E5%8A%A0%E6%A0%B7%E5%BC%8F tabindex=-1>2. 添加样式 <a href=#2.-%E6%B7%BB%E5%8A%A0%E6%A0%B7%E5%BC%8F class=header-anchor aria-hidden=true>#</a></h3><p>首先引入 Taro 提供的基础 HTML 样式<pre class=hljs><code><span class=hljs-keyword>if</span> (isWeapp) {
+  <span class=hljs-built_in>require</span>(<span class=hljs-string>&quot;@tarojs/taro/html.css&quot;</span>);
+}
+</code></pre><p>如果你需要自定义样式，可以添加自定义样式。我这里使用的是 Tailwind CSS。<pre class=hljs><code><span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.a</span> {
+  <span class=hljs-attribute>color</span>: <span class=hljs-number>#3b82f6</span>;      
+  <span class=hljs-selector-tag>text</span>-decoration-<span class=hljs-selector-tag>line</span>: underline;
+  <span class=hljs-selector-tag>text</span>-underline-<span class=hljs-attribute>offset</span>: <span class=hljs-number>4px</span>;  
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.span</span> {
+  <span class=hljs-attribute>display</span>: inline;            
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.img</span> {
+  <span class=hljs-attribute>max-width</span>: <span class=hljs-number>100%</span>;          
+  <span class=hljs-attribute>height</span>: auto;              
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.table</span> {
+  <span class=hljs-attribute>width</span>: <span class=hljs-number>100%</span>;              
+  <span class=hljs-attribute>border-collapse</span>: collapse;  
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.th</span>,
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.td</span> {
+  <span class=hljs-attribute>border-width</span>: <span class=hljs-number>1px</span>;        
+  <span class=hljs-attribute>border-style</span>: solid;
+  <span class=hljs-attribute>border-color</span>: <span class=hljs-number>#d1d5db</span>;      
+  <span class=hljs-attribute>padding-left</span>: <span class=hljs-number>1rem</span>;        
+  <span class=hljs-attribute>padding-right</span>: <span class=hljs-number>1rem</span>;        
+  <span class=hljs-attribute>padding-top</span>: <span class=hljs-number>0.5rem</span>;      
+  <span class=hljs-attribute>padding-bottom</span>: <span class=hljs-number>0.5rem</span>;    
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.th</span> {
+  <span class=hljs-attribute>background-color</span>: <span class=hljs-number>#e5e7eb</span>;  
+  <span class=hljs-attribute>font-weight</span>: <span class=hljs-number>500</span>;            
+  <span class=hljs-selector-tag>text</span>-align: left;            
+}
+
+<span class=hljs-selector-class>.article-content</span><span class=hljs-selector-class>.rich-text</span> <span class=hljs-selector-class>.tr</span><span class=hljs-selector-pseudo>:nth-child</span>(even) {
+  <span class=hljs-attribute>background-color</span>: <span class=hljs-number>#f3f4f6</span>;  
+}
+</code></pre><h3 id=3.-%E4%BF%AE%E5%A4%8D%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-span-%E4%B8%8D%E6%B8%B2%E6%9F%93 tabindex=-1>3. 修复微信小程序 <code>span</code> 不渲染 <a href=#3.-%E4%BF%AE%E5%A4%8D%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-span-%E4%B8%8D%E6%B8%B2%E6%9F%93 class=header-anchor aria-hidden=true>#</a></h3><p>如果你在后台给文本添加了样式，你可能会发现 <code>span</code> 节点在小程序端不渲染，这是 taro 把它渲染成了 <a href=https://developers.weixin.qq.com/miniprogram/dev/component/span.html>span</a>（预期是 text） 相关讨论见：<a href=https://github.com/NervJS/taro/issues/17747>[Bug]: dangerouslySetInnerHTML 无法渲染 span 标签 · Issue #17747 · NervJS/taro</a><p>解决：在 transform 阶段将 <code>span</code> 转为小程序可识别的 <code>text</code>。<pre class=hljs><code><span class="hljs-title class_">Taro</span>.<span class=hljs-property>options</span>.<span class=hljs-property>html</span>.<span class=hljs-property>transformElement</span> = <span class=hljs-function>(<span class=hljs-params><span class=hljs-attr>taroEle</span>: <span class="hljs-title class_">TaroElement</span></span>) =&gt;</span> {
+  <span class=hljs-keyword>const</span> nodeName = taroEle?.<span class=hljs-property>nodeName</span>?.<span class="hljs-title function_">toLowerCase</span>();
+  <span class=hljs-keyword>if</span> (nodeName === <span class=hljs-string>&quot;span&quot;</span>) {
+    taroEle.<span class=hljs-property>tagName</span> = <span class=hljs-string>&quot;TEXT&quot;</span>;
+    taroEle.<span class=hljs-property>nodeName</span> = <span class=hljs-string>&quot;text&quot;</span>;
+  }
+  <span class=hljs-keyword>return</span> taroEle;
+};
+</code></pre><p>同时，你也可以通过 <code>Taro.options.html.transformElement</code> 来给对应的标签添加属性。<pre class=hljs><code><span class="hljs-title class_">Taro</span>.<span class=hljs-property>options</span>.<span class=hljs-property>html</span>.<span class=hljs-property>transformElement</span> = <span class=hljs-function>(<span class=hljs-params><span class=hljs-attr>taroEle</span>: <span class="hljs-title class_">TaroElement</span></span>) =&gt;</span> {
+  <span class=hljs-keyword>const</span> nodeName = taroEle?.<span class=hljs-property>nodeName</span>?.<span class="hljs-title function_">toLowerCase</span>();
+  <span class=hljs-keyword>if</span> (nodeName === <span class=hljs-string>&quot;img&quot;</span>) {
+    <span class=hljs-comment>// 统一设置图片模式为 widthFix，避免图片溢出</span>
+    taroEle.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;mode&quot;</span>, <span class=hljs-string>&quot;widthFix&quot;</span>);
+  }
+  <span class=hljs-keyword>return</span> taroEle;
+};
+</code></pre><h3 id=4.-%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6 tabindex=-1>4. 添加事件 <a href=#4.-%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6 class=header-anchor aria-hidden=true>#</a></h3><p>给富文本添加事件有两种办法：<ol><li>参考文档：<a href=https://docs.taro.zone/docs/html#%E7%BB%91%E5%AE%9A%E4%BA%8B%E4%BB%B6>渲染 HTML | Taro 文档</a><li>事件委托到容器 3. 在后台给每一个标签添加 data-[*] 属性<ol><li>data-tag-name: 标签名，区分事件触发的标签<li>data-href: 跳转链接<li>data-a-href: 跳转链接<li>data-src: 图片 src<li>data-has-parent-a: 是否有父级 a 标签，用于处理 a 标签内的 span 标签点击事件，例如 <code>&lt;a&gt;&lt;span&gt;跳转&lt;/span&gt;&lt;/a&gt;</code> 点击事件会触发在 span 标签上，导致无法跳转。</ol></ol><p>taro 代码：<pre class=hljs><code><span class=hljs-comment>// 从 HTML 字符串中收集 &lt;img&gt; 的 src，用于 Taro.previewImage</span>
+<span class=hljs-keyword>function</span> <span class="hljs-title function_">getAllImageUrls</span>(<span class=hljs-params><span class=hljs-attr>content</span>: <span class=hljs-built_in>string</span></span>) {
+  <span class=hljs-comment>// 处理空值情况</span>
+  <span class=hljs-keyword>if</span> (!content || <span class=hljs-keyword>typeof</span> content !== <span class=hljs-string>&quot;string&quot;</span>) <span class=hljs-keyword>return</span> [];
+
+  <span class=hljs-keyword>const</span> imgReg = <span class=hljs-regexp>/&lt;img[^&gt;]*src=[&quot;&#x27;]([^&quot;&#x27;]+)[&quot;&#x27;][^&gt;]*&gt;/gi</span>;
+  <span class=hljs-keyword>const</span> <span class=hljs-attr>urls</span>: <span class=hljs-built_in>string</span>[] = [];
+  <span class=hljs-keyword>let</span> <span class=hljs-attr>match</span>: <span class="hljs-title class_">RegExpExecArray</span> | <span class=hljs-literal>null</span>;
+
+  <span class=hljs-keyword>try</span> {
+    <span class=hljs-keyword>while</span> ((match = imgReg.<span class="hljs-title function_">exec</span>(content)) !== <span class=hljs-literal>null</span>) {
+      <span class=hljs-keyword>const</span> src = match[<span class=hljs-number>1</span>];
+      <span class=hljs-comment>// 过滤掉空字符串和无效的URL</span>
+      <span class=hljs-keyword>if</span> (src &amp;&amp; src.<span class="hljs-title function_">trim</span>()) {
+        urls.<span class="hljs-title function_">push</span>(src);
+      }
+    }
+  } <span class=hljs-keyword>catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class=hljs-string>&quot;解析图片URL时出错:&quot;</span>, error);
+    <span class=hljs-keyword>return</span> [];
+  }
+
+  <span class=hljs-keyword>return</span> urls;
+}
+
+<span class=hljs-keyword>type</span> <span class="hljs-title class_">DataSet</span> = {
+  <span class=hljs-attr>tagName</span>?: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>href</span>?: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>src</span>?: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>aHref</span>?: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>hasParentA</span>?: <span class=hljs-built_in>boolean</span> | <span class=hljs-built_in>string</span>;
+};
+
+<span class=hljs-comment>// 容器绑定的事件</span>
+<span class=hljs-keyword>const</span> <span class=hljs-attr>handleClick</span>: <span class="hljs-title class_">ViewProps</span>[<span class=hljs-string>&quot;onClick&quot;</span>] = <span class=hljs-function>(<span class=hljs-params>e</span>) =&gt;</span> {
+  <span class=hljs-keyword>const</span> { target } = e;
+  <span class=hljs-keyword>const</span> { dataset } = target ?? {};
+  <span class=hljs-keyword>const</span> {
+    tagName = <span class=hljs-string>&quot;&quot;</span>,
+    href = <span class=hljs-string>&quot;&quot;</span>,
+    src = <span class=hljs-string>&quot;&quot;</span>,
+    aHref = <span class=hljs-string>&quot;&quot;</span>,
+    hasParentA = <span class=hljs-string>&quot;false&quot;</span>,
+  } = (dataset <span class=hljs-keyword>as</span> <span class="hljs-title class_">DataSet</span>) ?? ({} <span class=hljs-keyword>as</span> <span class="hljs-title class_">DataSet</span>);
+  <span class=hljs-keyword>const</span> lowerTagName = tagName?.<span class="hljs-title function_">toLowerCase</span>();
+
+  <span class=hljs-keyword>if</span> (lowerTagName === <span class=hljs-string>&quot;a&quot;</span>) {
+    <span class=hljs-comment>// 跳转链接</span>
+  }
+
+  <span class=hljs-comment>// 处理 &lt;a&gt;&lt;span/&gt;&lt;/a&gt; 的点击，事件会触发在 span 上</span>
+  <span class=hljs-keyword>if</span> (lowerTagName === <span class=hljs-string>&quot;span&quot;</span> &amp;&amp; hasParentA.<span class="hljs-title function_">toString</span>() === <span class=hljs-string>&quot;true&quot;</span> &amp;&amp; aHref) {
+    <span class=hljs-comment>// 跳转链接</span>
+  }
+
+  <span class=hljs-keyword>if</span> (lowerTagName === <span class=hljs-string>&quot;img&quot;</span>) {
+    <span class=hljs-comment>// images 为所有图片的 src 列表</span>
+    <span class=hljs-comment>// 获取到富文本内容后通过 getAllImageUrls 获取所有的图片</span>
+    <span class=hljs-comment>// 然后通过 Taro.previewImage 预览图片</span>
+    <span class=hljs-keyword>const</span> current = images.<span class="hljs-title function_">find</span>(<span class=hljs-function>(<span class=hljs-params>item</span>) =&gt;</span> item === src);
+    <span class=hljs-keyword>if</span> (src) {
+      <span class="hljs-title class_">Taro</span>.<span class="hljs-title function_">previewImage</span>({ <span class=hljs-attr>urls</span>: images, current });
+    }
+  }
+};
+</code></pre><p>富文本编辑器提交到后端前需要添加 dataset：<pre class=hljs><code><span class=hljs-keyword>import</span> { isString } <span class=hljs-keyword>from</span> <span class=hljs-string>&quot;lodash-es&quot;</span>;
+
+<span class=hljs-comment>/**
+ * 转换html文本
+ * 1. 给HTML字符串中的所有标签添加同名的className
+ * 2. 添加特定 tag 的 data-set 属性（a 的 href，img 的 src）
+ * <span class=hljs-doctag>@param</span> html HTML字符串
+ * <span class=hljs-doctag>@returns</span> 处理后的HTML字符串
+ */</span>
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>const</span> transformHtml = (<span class=hljs-attr>html</span>: <span class=hljs-built_in>string</span>): <span class=hljs-function><span class=hljs-params>string</span> =&gt;</span> {
+  <span class=hljs-keyword>if</span> (!html || !<span class="hljs-title function_">isString</span>(html)) <span class=hljs-keyword>return</span> <span class=hljs-string>&quot;&quot;</span>;
+
+  <span class=hljs-keyword>try</span> {
+    <span class=hljs-comment>// 创建一个临时的div元素来解析HTML</span>
+    <span class=hljs-keyword>const</span> tempDiv = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class=hljs-string>&quot;div&quot;</span>);
+    tempDiv.<span class=hljs-property>innerHTML</span> = html;
+
+    <span class=hljs-comment>// 递归处理所有子元素</span>
+    <span class=hljs-keyword>const</span> <span class="hljs-title function_">processElement</span> = (<span class=hljs-params><span class=hljs-attr>element</span>: <span class="hljs-title class_">Element</span></span>) =&gt; {
+      <span class=hljs-comment>// 跳过注释节点和文本节点</span>
+      <span class=hljs-keyword>if</span> (element.<span class=hljs-property>nodeType</span> === <span class="hljs-title class_">Node</span>.<span class=hljs-property>COMMENT_NODE</span> || element.<span class=hljs-property>nodeType</span> === <span class="hljs-title class_">Node</span>.<span class=hljs-property>TEXT_NODE</span>) {
+        <span class=hljs-keyword>return</span>;
+      }
+
+      <span class=hljs-comment>// 获取当前元素的标签名</span>
+      <span class=hljs-keyword>const</span> tagName = element.<span class=hljs-property>tagName</span>.<span class="hljs-title function_">toLowerCase</span>();
+
+      <span class=hljs-comment>// 跳过script和style标签</span>
+      <span class=hljs-keyword>if</span> (tagName === <span class=hljs-string>&quot;script&quot;</span> || tagName === <span class=hljs-string>&quot;style&quot;</span>) {
+        <span class=hljs-keyword>return</span>;
+      }
+
+      <span class=hljs-comment>// 处理自闭合标签</span>
+      <span class=hljs-keyword>const</span> isSelfClosing = [<span class=hljs-string>&quot;img&quot;</span>, <span class=hljs-string>&quot;br&quot;</span>, <span class=hljs-string>&quot;hr&quot;</span>, <span class=hljs-string>&quot;input&quot;</span>, <span class=hljs-string>&quot;meta&quot;</span>, <span class=hljs-string>&quot;link&quot;</span>].<span class="hljs-title function_">includes</span>(tagName);
+
+      element.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;data-tag-name&quot;</span>, tagName);
+
+      <span class=hljs-comment>// 添加className</span>
+      <span class=hljs-keyword>if</span> (element.<span class=hljs-property>classList</span>.<span class=hljs-property>length</span> &gt; <span class=hljs-number>0</span>) {
+        <span class=hljs-comment>// 如果已经有class，检查是否已经包含标签名</span>
+        <span class=hljs-keyword>if</span> (!element.<span class=hljs-property>classList</span>.<span class="hljs-title function_">contains</span>(tagName)) {
+          element.<span class=hljs-property>classList</span>.<span class="hljs-title function_">add</span>(tagName);
+        }
+      } <span class=hljs-keyword>else</span> {
+        element.<span class=hljs-property>className</span> = tagName;
+      }
+
+      <span class=hljs-keyword>if</span> (tagName === <span class=hljs-string>&quot;a&quot;</span>) {
+        <span class=hljs-comment>// add href to data-set</span>
+        element.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;data-href&quot;</span>, element.<span class="hljs-title function_">getAttribute</span>(<span class=hljs-string>&quot;href&quot;</span>) ?? <span class=hljs-string>&quot;&quot;</span>);
+
+        <span class=hljs-comment>// 如果 a 标签有子元素，给所有子元素添加特定属性</span>
+        <span class=hljs-keyword>if</span> (element?.<span class=hljs-property>children</span>?.<span class=hljs-property>length</span> &gt; <span class=hljs-number>0</span>) {
+          <span class=hljs-keyword>const</span> <span class="hljs-title function_">processChildElements</span> = (<span class=hljs-params><span class=hljs-attr>childElement</span>: <span class="hljs-title class_">Element</span></span>) =&gt; {
+            <span class=hljs-comment>// 给子元素添加标识，表示它有父级 a 标签</span>
+            childElement.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;data-has-parent-a&quot;</span>, <span class=hljs-string>&quot;true&quot;</span>);
+
+            <span class=hljs-comment>// 复制 a 标签的 data-set 属性给子元素</span>
+            <span class=hljs-keyword>const</span> dataHref = element.<span class="hljs-title function_">getAttribute</span>(<span class=hljs-string>&quot;data-href&quot;</span>);
+            <span class=hljs-keyword>if</span> (dataHref) {
+              childElement.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;data-a-href&quot;</span>, dataHref);
+            }
+
+            <span class=hljs-comment>// 递归处理子元素的子元素</span>
+            <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(childElement.<span class=hljs-property>children</span>).<span class="hljs-title function_">forEach</span>(processChildElements);
+          };
+
+          <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(element.<span class=hljs-property>children</span>).<span class="hljs-title function_">forEach</span>(processChildElements);
+        }
+      }
+      <span class=hljs-keyword>if</span> (tagName === <span class=hljs-string>&quot;img&quot;</span>) {
+        <span class=hljs-comment>// add src to data-set</span>
+        element.<span class="hljs-title function_">setAttribute</span>(<span class=hljs-string>&quot;data-src&quot;</span>, element.<span class="hljs-title function_">getAttribute</span>(<span class=hljs-string>&quot;src&quot;</span>) ?? <span class=hljs-string>&quot;&quot;</span>);
+      }
+
+      <span class=hljs-comment>// 如果不是自闭合标签，递归处理所有子元素</span>
+      <span class=hljs-keyword>if</span> (!isSelfClosing) {
+        <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(element.<span class=hljs-property>children</span>).<span class="hljs-title function_">forEach</span>(processElement);
+      }
+    };
+
+    <span class=hljs-comment>// 处理所有子元素</span>
+    <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(tempDiv.<span class=hljs-property>children</span>).<span class="hljs-title function_">forEach</span>(processElement);
+
+    <span class=hljs-comment>// 获取处理后的HTML</span>
+    <span class=hljs-keyword>let</span> result = tempDiv.<span class=hljs-property>innerHTML</span>;
+
+    <span class=hljs-comment>// 处理自闭合标签的class属性</span>
+    result = result.<span class="hljs-title function_">replace</span>(
+      <span class=hljs-regexp>/&lt;(img|br|hr|input|meta|link)([^&gt;]*?)(\/?)&gt;/gi</span>,
+      <span class=hljs-function>(<span class=hljs-params>match, tagName, attributes, selfClosing</span>) =&gt;</span> {
+        <span class=hljs-keyword>if</span> (attributes.<span class="hljs-title function_">includes</span>(<span class=hljs-string>&quot;class=&quot;</span>)) {
+          <span class=hljs-comment>// 如果已经有class属性，确保包含标签名</span>
+          <span class=hljs-keyword>return</span> match.<span class="hljs-title function_">replace</span>(<span class=hljs-regexp>/class=[&quot;&#x27;]([^&quot;&#x27;]*)[&quot;&#x27;]/</span>, <span class=hljs-function>(<span class=hljs-params>classMatch, existingClass</span>) =&gt;</span> {
+            <span class=hljs-keyword>if</span> (!existingClass.<span class="hljs-title function_">includes</span>(tagName)) {
+              <span class=hljs-keyword>return</span> <span class=hljs-string>`class=&quot;<span class=hljs-subst>${existingClass}</span> <span class=hljs-subst>${tagName}</span>&quot;`</span>;
+            }
+            <span class=hljs-keyword>return</span> classMatch;
+          });
+        } <span class=hljs-keyword>else</span> {
+          <span class=hljs-comment>// 如果没有class属性，添加一个</span>
+          <span class=hljs-keyword>return</span> <span class=hljs-string>`&lt;<span class=hljs-subst>${tagName}</span> class=&quot;<span class=hljs-subst>${tagName}</span>&quot;<span class=hljs-subst>${attributes}</span><span class=hljs-subst>${selfClosing}</span>&gt;`</span>;
+        }
+      },
+    );
+
+    <span class=hljs-keyword>return</span> result;
+  } <span class=hljs-keyword>catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class=hljs-string>&quot;Error processing HTML:&quot;</span>, error);
+    <span class=hljs-keyword>return</span> html; <span class=hljs-comment>// 发生错误时返回原始HTML</span>
+  }
+};
+</code></pre><h3 id=%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5 tabindex=-1>参考链接 <a href=#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5 class=header-anchor aria-hidden=true>#</a></h3><ul><li><a href=https://docs.taro.zone/docs/html>渲染 HTML | Taro 文档</a><li><a href=https://github.com/NervJS/taro/issues/17747>[Bug]: dangerouslySetInnerHTML 无法渲染 span 标签 · Issue #17747 · NervJS/taro</a><li><a href=https://developer.mozilla.org/zh-CN/docs/Glossary/Escape_character>转义字符 - MDN Web 文档术语表：Web 相关术语的定义 | MDN</a></ul></div></div><aside class=post-toc data-toc><div class=post-toc__title>目录</div><nav class=post-toc__body></nav></aside></article></main><footer class=site-footer><div class=container><p>Powered by GitHub Pages</div></footer><script src=../../../assets/js/logger.js></script><script src=../../../assets/js/theme.js></script><script src=../../../assets/js/mobile-menu.js></script><script src=../../../assets/js/github.js></script><script src=../../../assets/js/toc.js></script>

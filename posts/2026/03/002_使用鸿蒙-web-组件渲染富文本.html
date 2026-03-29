@@ -1,0 +1,168 @@
+<!doctype html><html lang=zh-CN><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><title>002_使用鸿蒙 Web 组件渲染富文本</title><meta content=本文介绍在鸿蒙ArkUI中使用Web组件渲染富文本的方案，包括生成完整HTML文档、建立双向通信以处理图片、链接等交互事件。 name=description><meta content="鸿蒙, ArkUI, 富文本, HarmonyOS" name=keywords><meta content=Seal name=author><meta content=index,follow name=robots><meta content=index,follow name=googlebot><meta content="" name=baidu-verification><meta content=article property=og:type><meta content="002_使用鸿蒙 Web 组件渲染富文本" property=og:title><meta content=本文介绍在鸿蒙ArkUI中使用Web组件渲染富文本的方案，包括生成完整HTML文档、建立双向通信以处理图片、链接等交互事件。 property=og:description><meta content=https://sealye09.github.io/posts/2026/03/002_使用鸿蒙-web-组件渲染富文本.html property=og:url><meta content="Seal's Blog" property=og:site_name><meta content=zh_CN property=og:locale><meta content=summary_large_image name=twitter:card><meta content="002_使用鸿蒙 Web 组件渲染富文本" name=twitter:title><meta content=本文介绍在鸿蒙ArkUI中使用Web组件渲染富文本的方案，包括生成完整HTML文档、建立双向通信以处理图片、链接等交互事件。 name=twitter:description><meta content=@sealye09 name=twitter:creator><link href=https://sealye09.github.io/posts/2026/03/002_使用鸿蒙-web-组件渲染富文本.html rel=canonical><link href=../../../assets/favicon.svg rel=icon type=image/svg+xml><script type=application/ld+json>{
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Seal's Blog",
+        "description": "Seal's Blog - 分享技术见解和编程经验",
+        "url": "https://sealye09.github.io",
+        "author": {
+          "@type": "Person",
+          "name": "Seal"
+        },
+        "inLanguage": "zh-CN"
+      }</script><script>!function(){try{var e=localStorage.getItem("theme"),t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,a=e||(t?"dark":"light");document.documentElement.setAttribute("data-theme",a)}catch(e){}}()</script><link href=https://fonts.googleapis.com rel=preconnect><link href=https://fonts.gstatic.com rel=preconnect crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel=stylesheet><link href=../../../assets/common.css rel=stylesheet><link href=../../../assets/post.css rel=stylesheet><link href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css rel=stylesheet media=(prefers-color-scheme:light)><link href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css rel=stylesheet media=(prefers-color-scheme:dark)><meta content=#ffffff name=theme-color><header class=site-header><div class="container header-inner"><a href=../../../index.html class=brand>Seal's Blog</a><nav class=site-nav aria-label=主导航><a href=../../../index.html class=site-nav__link>首页</a> <a href=../../../archive.html class=site-nav__link>归档</a></nav><div class=header-actions><a href=https://github.com/sealye09 class=github-link aria-label=GitHub data-username=sealye09 rel="noopener noreferrer" target=_blank><svg aria-hidden=true fill=currentColor height=20 viewBox="0 0 24 24" width=20><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg> </a><button aria-label=切换主题 class=theme-toggle id=theme-toggle><svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-sun><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" fill=none stroke=currentColor stroke-linecap=round stroke-width=1.5 /></svg> <svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-moon><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg></button> <button aria-label=切换菜单 class=mobile-menu-toggle aria-controls=mobile-menu aria-expanded=false><svg aria-hidden=true fill=currentColor height=24 viewBox="0 0 24 24" width=24 class=menu-icon-open><path d="M3 6h18M3 12h18M3 18h18" fill=none stroke=currentColor stroke-linecap=round stroke-width=2 /></svg> <svg aria-hidden=true fill=currentColor height=24 viewBox="0 0 24 24" width=24 class=menu-icon-close style=display:none><path d="M18 6L6 18M6 6l12 12" fill=none stroke=currentColor stroke-linecap=round stroke-width=2 stroke-linejoin=round /></svg></button></div></div><nav class=mobile-menu aria-label=移动端导航 id=mobile-menu><div class=mobile-menu-section><a href=../../../index.html class=mobile-nav__link>首页</a> <a href=../../../archive.html class=mobile-nav__link>归档</a></div><div class="mobile-menu-section mobile-menu-actions"><a href=https://github.com/sealye09 class=mobile-action-link aria-label=GitHub data-username=sealye09 rel="noopener noreferrer" target=_blank><svg aria-hidden=true fill=currentColor height=20 viewBox="0 0 24 24" width=20><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg> <span>GitHub</span> </a><button aria-label=切换主题 class=mobile-action-button id=mobile-theme-toggle><svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-sun><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" fill=none stroke=currentColor stroke-linecap=round stroke-width=1.5 /></svg> <svg aria-hidden=true fill=currentColor height=18 viewBox="0 0 24 24" width=18 class=icon-moon><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg> <span>主题</span></button></div></nav></header><main class="container site-main"><article class="content-section post"><div class=post-main><div class=post-meta><h1 class=post-title>002_使用鸿蒙 Web 组件渲染富文本</h1><div class="post-meta__item post-meta__tags"><span class=post-meta__label>标签：</span><div class=post-tags><span class=post-tag>鸿蒙</span><span class=post-tag>ArkUI</span><span class=post-tag>富文本</span><span class=post-tag>HarmonyOS</span></div></div><div class="post-meta__item post-meta__summary"><span class=post-meta__label>摘要：</span><span class=post-summary-text>本文介绍在鸿蒙ArkUI中使用Web组件渲染富文本的方案，包括生成完整HTML文档、建立双向通信以处理图片、链接等交互事件。</span></div><div class=post-meta__item><span class=post-meta__label>创建日期：</span><time>2026-03-29</time></div><div class=post-meta__item><span class=post-meta__label>修改日期：</span><time>2026-03-29</time></div></div><div class=post-content><h2 id=%E4%BD%BF%E7%94%A8%E9%B8%BF%E8%92%99-web-%E7%BB%84%E4%BB%B6%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC tabindex=-1>使用鸿蒙 Web 组件渲染富文本 <a href=#%E4%BD%BF%E7%94%A8%E9%B8%BF%E8%92%99-web-%E7%BB%84%E4%BB%B6%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC class=header-anchor aria-hidden=true>#</a></h2><p>在之前的 <a href=./001_%E4%BD%BF%E7%94%A8%20TaroJS%20%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC.html>使用 TaroJS 提供的能力渲染富文本</a> 一文中，我们介绍了在 TaroJS（小程序/H5）中渲染富文本的方式。本文将介绍鸿蒙 ArkUI 中使用 <strong>Web 组件</strong> 渲染富文本的实现方案。<p>其中图片 URL 提取（<code>getAllImageUrls</code>）和事件委托的思路与前文一致，此处不再重复。<h3 id=1.-webview-%E6%96%B9%E6%A1%88%EF%BC%88%E5%AE%8C%E6%95%B4%E6%96%87%E7%AB%A0%E9%A1%B5%EF%BC%89 tabindex=-1>1. WebView 方案（完整文章页） <a href=#1.-webview-%E6%96%B9%E6%A1%88%EF%BC%88%E5%AE%8C%E6%95%B4%E6%96%87%E7%AB%A0%E9%A1%B5%EF%BC%89 class=header-anchor aria-hidden=true>#</a></h3><p>对于包含复杂样式、表格、代码块等内容的完整文章，推荐使用 <code>Web</code> 组件加载 HTML。<h4 id=1.1-%E7%94%9F%E6%88%90-html-%E6%96%87%E6%A1%A3 tabindex=-1>1.1 生成 HTML 文档 <a href=#1.1-%E7%94%9F%E6%88%90-html-%E6%96%87%E6%A1%A3 class=header-anchor aria-hidden=true>#</a></h4><p>将后端返回的 HTML 内容包装为完整的 HTML 文档，包含内联 CSS 样式：<pre class=hljs><code><span class="hljs-title function_">generateHtmlContent</span>(): <span class=hljs-built_in>string</span> {
+  <span class=hljs-keyword>if</span> (!<span class="hljs-variable language_">this</span>.<span class=hljs-property>article</span>) <span class=hljs-keyword>return</span> <span class=hljs-string>&#x27;&#x27;</span>;
+  <span class=hljs-keyword>return</span> <span class=hljs-string>`&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=0.9&quot; /&gt;
+
+    &lt;script&gt;
+      var h5Port;
+      // 监听来自 ArkTS 侧的消息端口初始化
+      window.addEventListener(&quot;message&quot;, function (event) {
+        if (event.data === &quot;__init_port__&quot; &amp;&amp; event.ports[0]) {
+          h5Port = event.ports[0];
+        }
+      });
+
+      // 向 ArkTS 侧发送消息
+      function PostMsgToEts(data) {
+        if (h5Port) { h5Port.postMessage(data); }
+      }
+
+      // 拦截所有点击事件
+      document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+        document.addEventListener(&quot;click&quot;, function (event) {
+          const target = event.target;
+          const tagName = target.tagName;
+          const dataset = target.dataset;
+
+          if (tagName === &quot;A&quot;) {
+            PostMsgToEts(JSON.stringify({
+              type: &quot;linkClick&quot;,
+              data: {
+                tagName: &quot;A&quot;,
+                href: target.href || &quot;&quot;,
+                dataset: dataset ? Object.assign({}, dataset) : {},
+              }
+            }));
+            return;
+          }
+
+          if (tagName === &quot;SPAN&quot;) {
+            PostMsgToEts(JSON.stringify({
+              type: &quot;spanClick&quot;,
+              data: {
+                tagName: &quot;SPAN&quot;,
+                dataset: dataset ? Object.assign({}, dataset) : {},
+              }
+            }));
+            return;
+          }
+
+          if (tagName === &quot;IMG&quot; || tagName === &quot;IMAGE&quot;) {
+            PostMsgToEts(JSON.stringify({
+              type: &quot;imageClick&quot;,
+              data: {
+                tagName: &quot;IMG&quot;,
+                src: target.src,
+                dataset: dataset ? Object.assign({}, dataset) : {},
+              }
+            }));
+            return;
+          }
+        });
+      });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div  id=&quot;content&quot;&gt;\${this.article.content}&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;`</span>;
+}
+</code></pre><h4 id=1.2-%E5%8A%A0%E8%BD%BD-html-%E5%B9%B6%E5%BB%BA%E7%AB%8B%E9%80%9A%E4%BF%A1 tabindex=-1>1.2 加载 HTML 并建立通信 <a href=#1.2-%E5%8A%A0%E8%BD%BD-html-%E5%B9%B6%E5%BB%BA%E7%AB%8B%E9%80%9A%E4%BF%A1 class=header-anchor aria-hidden=true>#</a></h4><p>使用 <code>Web</code> 组件的 <code>onControllerAttached</code> 生命周期加载内容，在 <code>onPageEnd</code> 中建立 <code>WebMessagePort</code> 双向通信：<pre class=hljs><code><span class=hljs-keyword>import</span> { webview } <span class=hljs-keyword>from</span> <span class=hljs-string>&#x27;@kit.ArkWeb&#x27;</span>;
+
+<span class=hljs-meta>@State</span> <span class=hljs-attr>images</span>: <span class="hljs-title class_">DefaultMediaModel</span>[] = [];
+<span class=hljs-keyword>private</span> <span class=hljs-attr>controller</span>: webview.<span class=hljs-property>WebviewController</span> = <span class=hljs-keyword>new</span> webview.<span class="hljs-title class_">WebviewController</span>();
+<span class=hljs-keyword>private</span> <span class=hljs-attr>ports</span>: webview.<span class=hljs-property>WebMessagePort</span>[] = [];
+
+<span class=hljs-comment>// 在 build() 中</span>
+<span class="hljs-title class_">Web</span>({ <span class=hljs-attr>src</span>: <span class=hljs-string>&quot;&quot;</span>, <span class=hljs-attr>controller</span>: <span class="hljs-variable language_">this</span>.<span class=hljs-property>controller</span> })
+  .<span class="hljs-title function_">width</span>(<span class=hljs-string>&#x27;100%&#x27;</span>)
+  .<span class="hljs-title function_">backgroundColor</span>(<span class=hljs-string>&quot;#f5f5f5&quot;</span>)
+  .<span class="hljs-title function_">javaScriptAccess</span>(<span class=hljs-literal>true</span>)
+  .<span class="hljs-title function_">zoomAccess</span>(<span class=hljs-literal>false</span>)
+  .<span class="hljs-title function_">onControllerAttached</span>(<span class=hljs-function>() =&gt;</span> {
+    <span class=hljs-comment>// 加载 HTML 内容</span>
+    <span class="hljs-variable language_">this</span>.<span class=hljs-property>controller</span>.<span class="hljs-title function_">loadData</span>(
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">generateHtmlContent</span>(), <span class=hljs-string>&quot;text/html&quot;</span>, <span class=hljs-string>&quot;UTF-8&quot;</span>, <span class=hljs-string>&quot; &quot;</span>, <span class=hljs-string>&quot; &quot;</span>
+    );
+  })
+  .<span class="hljs-title function_">onPageEnd</span>(<span class=hljs-function>() =&gt;</span> {
+    <span class=hljs-comment>// 1. 创建两个消息端口</span>
+    <span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span> = <span class="hljs-variable language_">this</span>.<span class=hljs-property>controller</span>.<span class="hljs-title function_">createWebMessagePorts</span>();
+    <span class=hljs-keyword>if</span> (<span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span>[<span class=hljs-number>0</span>] &amp;&amp; <span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span>[<span class=hljs-number>1</span>]) {
+      <span class=hljs-comment>// 2. 在端口1上注册回调，接收 HTML 侧消息</span>
+      <span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span>[<span class=hljs-number>1</span>].<span class="hljs-title function_">onMessageEvent</span>(<span class=hljs-function>(<span class=hljs-params><span class=hljs-attr>result</span>: webview.<span class="hljs-title class_">WebMessage</span></span>) =&gt;</span> {
+        <span class=hljs-keyword>if</span> (<span class=hljs-keyword>typeof</span> result === <span class=hljs-string>&#x27;string&#x27;</span>) {
+          <span class=hljs-keyword>const</span> messageData = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(result) <span class=hljs-keyword>as</span> <span class="hljs-title class_">DOMEvent</span>;
+          <span class=hljs-keyword>if</span> (messageData.<span class=hljs-property>type</span> === <span class=hljs-string>&#x27;linkClick&#x27;</span> || messageData.<span class=hljs-property>type</span> === <span class=hljs-string>&#x27;spanClick&#x27;</span>) {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">handleLinkClick</span>(messageData.<span class=hljs-property>data</span> <span class=hljs-keyword>as</span> <span class="hljs-title class_">LinkData</span>);
+          }
+          <span class=hljs-keyword>if</span> (messageData.<span class=hljs-property>type</span> === <span class=hljs-string>&#x27;imageClick&#x27;</span>) {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">handleImageClick</span>(messageData.<span class=hljs-property>data</span> <span class=hljs-keyword>as</span> <span class="hljs-title class_">ImageData</span>);
+          }
+        }
+      });
+      <span class=hljs-comment>// 3. 将端口0发送给 HTML 侧</span>
+      <span class="hljs-variable language_">this</span>.<span class=hljs-property>controller</span>.<span class="hljs-title function_">postMessage</span>(<span class=hljs-string>&#x27;__init_port__&#x27;</span>, [<span class="hljs-variable language_">this</span>.<span class=hljs-property>ports</span>[<span class=hljs-number>0</span>]], <span class=hljs-string>&#x27;*&#x27;</span>);
+    }
+  })
+</code></pre><p><strong>WebMessagePort 通信流程：</strong><ol><li><code>createWebMessagePorts()</code> 创建端口 0 和端口 1<li>端口 1 在 ArkTS 侧注册 <code>onMessageEvent</code> 回调接收消息<li>通过 <code>postMessage('__init_port__', [端口0], '*')</code> 将端口 0 传递给 HTML 侧<li>HTML 侧通过 <code>window.addEventListener(&quot;message&quot;, ...)</code> 接收端口 0 并保存为 <code>h5Port</code><li>HTML 侧通过 <code>h5Port.postMessage(data)</code> 向 ArkTS 侧发送消息</ol><h3 id=2.-%E9%93%BE%E6%8E%A5%E7%82%B9%E5%87%BB%E5%A4%84%E7%90%86 tabindex=-1>2. 链接点击处理 <a href=#2.-%E9%93%BE%E6%8E%A5%E7%82%B9%E5%87%BB%E5%A4%84%E7%90%86 class=header-anchor aria-hidden=true>#</a></h3><p>与 TaroJS 方案类似，需要区分外部链接、内部链接和嵌套在 <code>&lt;span&gt;</code> 中的链接。后端需要在提交 HTML 前给标签添加 <code>data-*</code> 属性（<code>data-tag-name</code>、<code>data-href</code>、<code>data-a-href</code>、<code>data-has-parent-a</code> 等），具体实现参考 <a href=./001_%E4%BD%BF%E7%94%A8%20TaroJS%20%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC.html>前文的 transformHtml 函数</a>。<pre class=hljs><code><span class=hljs-keyword>interface</span> <span class="hljs-title class_">LinkData</span> {
+  <span class=hljs-attr>href</span>: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>tagName</span>: <span class=hljs-built_in>string</span>;
+  <span class=hljs-attr>dataset</span>: <span class="hljs-title class_">Record</span>&lt;<span class=hljs-built_in>string</span>, <span class=hljs-built_in>string</span>&gt;;
+}
+
+<span class="hljs-title function_">handleLinkClick</span>(<span class=hljs-params><span class=hljs-attr>linkData</span>: <span class="hljs-title class_">LinkData</span></span>) {
+  <span class=hljs-keyword>const</span> { href, tagName, dataset } = linkData;
+  <span class=hljs-keyword>const</span> aHref = dataset.<span class=hljs-property>aHref</span> || <span class=hljs-string>&quot;&quot;</span>;
+  <span class=hljs-keyword>const</span> datasetHref = dataset.<span class=hljs-property>href</span> || <span class=hljs-string>&quot;&quot;</span>;
+  <span class=hljs-keyword>const</span> hasParentA = dataset.<span class=hljs-property>hasParentA</span> || <span class=hljs-string>&quot;&quot;</span>;
+
+  <span class=hljs-comment>// 处理 &lt;a&gt;&lt;span/&gt;&lt;/a&gt; 的点击，事件会触发在 span 上</span>
+  <span class=hljs-keyword>const</span> isSpanLink = tagName === <span class=hljs-string>&#x27;SPAN&#x27;</span> &amp;&amp; <span class="hljs-title class_">Boolean</span>(aHref) &amp;&amp; <span class="hljs-title class_">Boolean</span>(hasParentA);
+  <span class=hljs-keyword>if</span> (isSpanLink || tagName === <span class=hljs-string>&#x27;A&#x27;</span>) {
+    <span class=hljs-keyword>const</span> realLink = href || datasetHref || aHref || <span class=hljs-string>&#x27;&#x27;</span>;
+
+    <span class=hljs-keyword>const</span> isExternalLink = realLink.<span class="hljs-title function_">startsWith</span>(<span class=hljs-string>&#x27;http://&#x27;</span>) || realLink.<span class="hljs-title function_">startsWith</span>(<span class=hljs-string>&#x27;https://&#x27;</span>);
+
+    <span class=hljs-keyword>if</span> (isExternalLink) {
+      <span class=hljs-comment>// 外部链接处理</span>
+    } <span class=hljs-keyword>else</span> {
+      <span class=hljs-comment>// 内部链接：根据业务自行处理路由跳转</span>
+    }
+  }
+}
+</code></pre><h3 id=3.-%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88 tabindex=-1>3. 图片预览 <a href=#3.-%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88 class=header-anchor aria-hidden=true>#</a></h3><p>图片 URL 提取逻辑（<code>getAllImageUrls</code>）参考 <a href=./001_%E4%BD%BF%E7%94%A8%20TaroJS%20%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC.html>前文实现</a>。这里补充鸿蒙端的图片预览。<h4 id=%E9%A2%84%E8%A7%88%E5%9B%BE%E7%89%87 tabindex=-1>预览图片 <a href=#%E9%A2%84%E8%A7%88%E5%9B%BE%E7%89%87 class=header-anchor aria-hidden=true>#</a></h4><p>加载文章时提取所有图片 URL 并构建预览列表，点击图片时定位到对应位置：<pre class=hljs><code><span class=hljs-keyword>import</span> { <span class="hljs-title class_">DefaultMediaModel</span>, <span class="hljs-title class_">DefaultMediaType</span>, <span class="hljs-title class_">MediaPreview</span>, <span class="hljs-title class_">MediaPreviewOptions</span> } <span class=hljs-keyword>from</span> <span class=hljs-string>&#x27;@lyb/media-preview&#x27;</span>;
+
+<span class=hljs-comment>// 加载文章时构建预览列表</span>
+<span class=hljs-keyword>const</span> list = <span class="hljs-title function_">getAllImageUrls</span>(<span class="hljs-variable language_">this</span>.<span class=hljs-property>article</span>.<span class=hljs-property>content</span>)
+  ?.<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>)
+  ?.<span class="hljs-title function_">map</span>(<span class=hljs-function><span class=hljs-params>src</span> =&gt;</span> ({
+    <span class=hljs-attr>type</span>: <span class="hljs-title class_">DefaultMediaType</span>.<span class=hljs-property>IMAGE</span>,
+    <span class=hljs-attr>sourceSrc</span>: src,
+    <span class=hljs-attr>placeholder</span>: <span class=hljs-string>&quot;预览图片&quot;</span>,
+  } <span class=hljs-keyword>as</span> <span class="hljs-title class_">DefaultMediaModel</span>));
+<span class="hljs-variable language_">this</span>.<span class=hljs-property>images</span> = list;
+<span class="hljs-variable language_">this</span>.<span class=hljs-property>mediaPreviewOptions</span>.<span class="hljs-title function_">setMedias</span>(list);
+
+<span class=hljs-comment>// 点击图片时打开预览</span>
+<span class="hljs-title function_">handleImageClick</span>(<span class=hljs-params><span class=hljs-attr>data</span>: <span class="hljs-title class_">ImageData</span></span>) {
+  <span class=hljs-keyword>const</span> src = data.<span class=hljs-property>src</span> ?? <span class=hljs-string>&quot;&quot;</span>;
+  <span class=hljs-keyword>const</span> idx = <span class="hljs-variable language_">this</span>.<span class=hljs-property>images</span>.<span class="hljs-title function_">findIndex</span>(<span class=hljs-function><span class=hljs-params>item</span> =&gt;</span> item.<span class=hljs-property>sourceSrc</span> === src);
+  <span class="hljs-variable language_">this</span>.<span class=hljs-property>mediaPreviewOptions</span>.<span class="hljs-title function_">setInitIndex</span>(idx === -<span class=hljs-number>1</span> ? <span class=hljs-number>0</span> : idx);
+  <span class="hljs-title class_">MediaPreview</span>.<span class="hljs-title function_">open</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getUIContext</span>(), <span class="hljs-variable language_">this</span>.<span class=hljs-property>mediaPreviewOptions</span>);
+}
+</code></pre><h3 id=4.-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5 tabindex=-1>4. 参考链接 <a href=#4.-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5 class=header-anchor aria-hidden=true>#</a></h3><ul><li><a href=https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-web-V5>Web 组件 - ArkUI（API 12）| 华为开发者联盟</a><li><a href=https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-webview-V5#webmessageport>WebMessagePort - Web（ArkWeb）| 华为开发者联盟</a><li><a href=./001_%E4%BD%BF%E7%94%A8%20TaroJS%20%E6%8F%90%E4%BE%9B%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%B2%E6%9F%93%E5%AF%8C%E6%96%87%E6%9C%AC.html>使用 TaroJS 提供的能力渲染富文本</a></ul></div></div><aside class=post-toc><div class=post-toc__title>目录</div><nav class=post-toc__body></nav></aside></article></main><footer class=site-footer><div class=container><p>Powered by GitHub Pages</div></footer><script src=../../../assets/js/theme.js></script><script src=../../../assets/js/mobile-menu.js></script><script src=../../../assets/js/github.js></script><script src=../../../assets/js/toc.js></script>
